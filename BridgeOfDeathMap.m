@@ -72,17 +72,16 @@ while 1
     dis_r = old_data(2) - new_data(2)
     % average distance
     tot_dis = (dis_l + dis_r) / 2;
-    % change in angle of neato
+    % Calculating the ICC
     R = (d/2)*((dis_l + dis_r)/(dis_r - dis_l))
     ICC = [Px(t) - R*cos(theta); Py(t)+R*sin(theta)]
         delta_theta = (dis_r - dis_l) / 0.25
     theta = theta + delta_theta;
-    % calculates displacement
-%     delta_x = tot_dis * cos(theta); 
-%     delta_y = tot_dis * sin(theta);
-    
+
+    %our rotation matrix
     Rotmat = [cos(delta_theta) -sin(delta_theta); sin(delta_theta) cos(delta_theta)]
     new_positions = Rotmat*([Px(t);Py(t)] - ICC) + ICC
+    %Makes sure the ICC exists, if it doesnt then it drives straight. 
     if isnan(R)
       new_positions = dis_l*[cos(theta); sin(theta)] + [Px(t); Py(t)]
     end
